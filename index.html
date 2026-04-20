@@ -1,108 +1,108 @@
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quotes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
-body{
-  background-color:#222;
-  color:#eee;
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background-color: #222;
+  color: #eee;
   display: flex;
-  justify-content: center; /* Centers horizontally */
-  align-items: start;     /* Centers vertically */
-  min-height: 100vh;       /* Important: sets body height to full viewport */
-  margin: 0;    
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
 }
 .wrap {
-  width:100%;
-  max-width:640px;
-  padding-bottom:10%;
-  display: flex; 
-  flex-direction: 
-  column; align-items: 
-  center; justify-content: 
-  center; padding: 3rem 2rem; 
-  text-align: left; 
+  width: 100%;
+  max-width: 640px;
+  padding: 3rem 2rem 10%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
-.inner-wrap{
-  max-width: 640px; 
-  width:100%;
-  margin: 0 auto 1.5rem; 
-}
-.qt { 
-  font-family: 'Libre Baskerville', serif; 
-  font-size: 1.35rem; 
-  line-height: 1.75; 
-  font-style: italic; 
-  color: var(--color-text-primary); 
-}
-.au { 
-  font-family: 'Libre Baskerville', serif; 
-  font-size: 0.9rem; 
-  color: var(--color-text-secondary); 
-}
-.btn-wrap{
-  margin-bottom:6rem;
-}
-.btn { 
-  font-family: "Helvetica Neue", "Helvetica", "Arial"; 
-  font-size: 13px; 
-  padding: 8px 20px; 
-  cursor: pointer; 
-  border-radius: var(--border-radius-md); 
-  background: transparent; 
-  color: var(--color-text-secondary); 
-  border: 0.5px solid var(--color-border-secondary); 
-  transition: background 0.3s; 
-  border: solid;
-  border-width: 1px;
+.btn-wrap { margin-bottom: 6rem; }
+.btn {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 13px;
+  padding: 8px 20px;
+  cursor: pointer;
   border-radius: 6px;
-  border-color: #444;
+  background: transparent;
+  color: #999;
+  border: 1px solid #444;
+  transition: background 0.2s;
 }
-.btn:hover { background: var(--color-background-secondary); }
+.btn:hover { background: #333; }
+.qt {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 1.35rem;
+  line-height: 1.75;
+  font-style: italic;
+  color: #eee;
+  margin-bottom: 1rem;
+  max-width: 640px;
+  width: 100%;
+}
+.au {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 0.9rem;
+  color: #999;
+  max-width: 640px;
+  width: 100%;
+}
 .fade { animation: fi 0.35s ease; }
-@keyframes fi { from { opacity:0; transform: translateY(5px); } to { opacity:1; transform:translateY(0); } }
+@keyframes fi { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+.error { font-family: 'Libre Baskerville', serif; font-size: 0.85rem; color: #a66; font-style: italic; }
 </style>
+</head>
+<body>
 <div class="wrap">
-  <div class="btn-wrap inner-wrap">
-    <button class="btn" onclick="show()">Refresh</button>
+  <div class="btn-wrap">
+    <button class="btn" onclick="showNext()">Refresh</button>
   </div>
-  <p class="qt inner-wrap" id="qt"></p>
-  <p class="au inner-wrap" id="au"></p>
+  <p class="qt" id="qt">Loading…</p>
+  <p class="au" id="au"></p>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
-const qs = [
-  ["I contend that we are both atheists. I just believe in one fewer god than you do.", "Stephen Roberts"],
-  ["Religion is an insult to human dignity. With or without it you would have good people doing good things and evil people doing evil things.", "Steven Weinberg"],
-  ["The fact that a believer is happier than a skeptic is no more to the point than the fact that a drunken man is happier than a sober one.", "George Bernard Shaw"],
-  ["Atheism is not a disbelief in gods or a denial of gods; it is a lack of belief in gods.", "George H. Smith"],
-  ["We are all atheists about most of the gods that humanity has ever believed in. Some of us just go one god further.", "Richard Dawkins"],
-  ["I do not feel obliged to believe that the same God who has endowed us with sense, reason, and intellect has intended us to forgo their use.", "Galileo Galilei"],
-  ["A man is accepted into a church for what he believes and he is turned out for what he knows.", "Mark Twain"],
-  ["The invisible and the non-existent look very much alike.", "Delos B. McKown"],
-  ["An atheist is a man who has no invisible means of support.", "John Buchan"],
-  ["Philosophy is questions that may never be answered. Religion is answers that may never be questioned.", "Anonymous"],
-  ["Blind faith is an ironic gift to return to the Creator of human intelligence.", "Anonymous"],
-  ["I'm a polyatheist — there are many gods I don't believe in.", "Dan Fouts"],
-  ["It's an incredible con job when you think about it, to believe something now in exchange for something after death.", "Gloria Steinem"],
-  ["Gods don't kill people. People with gods kill people.", "David Viaene"],
-  ["The world holds two classes of men — intelligent men without religion, and religious men without intelligence.", "Abu'l‑Ala Al-Ma'arri"],
-  ["I would rather have a mind opened by wonder than one closed by belief.", "Gerry Spence"],
-  ["To you I'm an atheist; to God, I'm the loyal opposition.", "Woody Allen"],
-  ["Properly read, the Bible is the most potent force for atheism ever conceived.", "Isaac Asimov"],
-  ["The most preposterous notion that H. sapiens has ever dreamed up is that the Lord God of Creation wants a personal relationship with every one of us.", "Robert A. Heinlein"],
-  ["I do not think it is necessary to believe that the same God who gave us our senses, our speech, our intellect, intended us to abandon their use.", "Galileo Galilei"],
-  ["For those who believe in God, most of the big questions are answered. But for those of us who can't readily accept the God formula, the big answers don't remain stone-written. We adjust to new conditions and discoveries. We are pliable. Love need not be a command nor faith a dictum. I am my own god. We are here to unlearn the teachings of the church, state, and our educational system. We are here to drink beer. We are here to kill war. We are here to laugh at the odds and live our lives so well that Death will tremble to take us.","Charles Bukowski"],
-  ["Why would Satan torture people in hell for disobeying the SAME god he disobeyed?", "Anonymous"],
-  ["Religion has actually convinced people that there's an invisible man living in the sky who watches everything you do, every minute of every day. And the invisible man has a special list of ten things he does not want you to do. And if you do any of these ten things, he has a special place, full of fire and smoke and burning and torture and anguish, where he will send you to live and suffer and burn and choke and scream and cry forever and ever 'til the end of time! But He loves you. He loves you, and He needs money! He always needs money! He's all-powerful, all-perfect, all-knowing, and all-wise, somehow just can't handle money!","George Carlin"],
-  ["Isn't it enough to see that a garden is beautiful without having to believe that there are fairies at the bottom of it too?","Douglas Adams"],
-  ["Those who can make you believe absurdities, can make you commit atrocities.", "Voltaire"],
-];
-let last = -1;
-function show() {
-  let i; do { i = Math.floor(Math.random() * qs.length); } while (i === last);
-  last = i;
-  const qt = document.getElementById('qt');
-  qt.classList.remove('fade'); void qt.offsetWidth; qt.classList.add('fade');
-  qt.textContent = '\u201C' + qs[i][0] + '\u201D';
-  document.getElementById('au').textContent = '\u2014 ' + qs[i][1];
+// ── CONFIG ── Replace these two values with your own from supabase.com > Project Settings > API
+const SUPABASE_URL = 'https://owmxhodijcgzuqbqknov.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_8Bl9vucM-rbT37MOsg55Zw_PgHcmOmi';
+
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+let quotes = [];
+let lastIdx = -1;
+
+async function init() {
+  const { data, error } = await sb.from('quotes').select('id, text, author').order('id');
+  if (error || !data?.length) {
+    document.getElementById('qt').textContent = 'Could not load quotes.';
+    document.getElementById('qt').classList.add('error');
+    document.getElementById('au').textContent = error?.message || 'No quotes found.';
+    return;
+  }
+  quotes = data;
+  showNext();
 }
-show();
+
+function showNext() {
+  if (!quotes.length) return;
+  let i;
+  do { i = Math.floor(Math.random() * quotes.length); } while (i === lastIdx && quotes.length > 1);
+  lastIdx = i;
+  const qtEl = document.getElementById('qt');
+  qtEl.classList.remove('fade'); void qtEl.offsetWidth; qtEl.classList.add('fade');
+  qtEl.textContent = '\u201C' + quotes[i].text + '\u201D';
+  document.getElementById('au').textContent = '\u2014 ' + quotes[i].author;
+}
+
+init();
 </script>
+</body>
+</html>
