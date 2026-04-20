@@ -25,7 +25,7 @@ body {
   flex-direction: column;
   align-items: flex-start;
 }
-.btn-wrap { margin-bottom: 6rem; }
+.btn-wrap { margin-bottom: 2rem; }
 .btn {
   font-family: 'Libre Baskerville', serif;
   font-size: 0px;
@@ -63,8 +63,7 @@ body {
 </style>
 </head>
 <body>
-<div class="wrap">
-  <div class="btn-wrap">
+<div class="btn-wrap">
     <!--button class="btn" onclick="showNext()">Refresh</button-->
     <button class="btn" onclick="showNext()" aria-label="Refresh">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -72,6 +71,7 @@ body {
       </svg>
     </button>
 </div>
+<div class="wrap">
   <p class="qt" id="qt">Loading…</p>
   <p class="au" id="au"></p>
 </div>
