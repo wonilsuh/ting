@@ -74,7 +74,6 @@ body {
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
-// ── CONFIG ── Replace these two values with your own from supabase.com > Project Settings > API
 const SUPABASE_URL = 'https://owmxhodijcgzuqbqknov.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_8Bl9vucM-rbT37MOsg55Zw_PgHcmOmi';
 
@@ -92,18 +91,30 @@ async function init() {
     return;
   }
   quotes = data;
+
+  // If a quote ID is in the hash, show that quote; otherwise show a random one
+  const hashId = parseInt(location.hash.slice(1), 10);
+  if (!isNaN(hashId)) {
+    const idx = quotes.findIndex(q => q.id === hashId);
+    if (idx !== -1) { display(idx); return; }
+  }
   showNext();
+}
+
+function display(i) {
+  lastIdx = i;
+  const qtEl = document.getElementById('qt');
+  qtEl.classList.remove('fade'); void qtEl.offsetWidth; qtEl.classList.add('fade');
+  qtEl.textContent = '\u201C' + quotes[i].text + '\u201D';
+  document.getElementById('au').textContent = '\u2014 ' + quotes[i].author;
+  history.replaceState(null, '', '#' + quotes[i].id);
 }
 
 function showNext() {
   if (!quotes.length) return;
   let i;
   do { i = Math.floor(Math.random() * quotes.length); } while (i === lastIdx && quotes.length > 1);
-  lastIdx = i;
-  const qtEl = document.getElementById('qt');
-  qtEl.classList.remove('fade'); void qtEl.offsetWidth; qtEl.classList.add('fade');
-  qtEl.textContent = '\u201C' + quotes[i].text + '\u201D';
-  document.getElementById('au').textContent = '\u2014 ' + quotes[i].author;
+  display(i);
 }
 
 init();
