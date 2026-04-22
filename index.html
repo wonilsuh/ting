@@ -14,23 +14,31 @@ body {
   color: #eee;
   min-height: 100vh;
 }
+
+/* ── Pages ── */
+.page { display: none; min-height: 100vh; }
+.page.active { display: flex; flex-direction: column; }
+
+/* ── Quote page ── */
+#page-main {
+  align-items: center;
+}
 .wrap {
   width: 100%;
   padding: 3rem 2rem 10%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  flex: 1;
 }
 .btn-wrap { 
   margin: 2rem;
-  margin-bottom:4rem;
-  max-width:640px;
-  width:100%;
+  margin-bottom: 4rem;
+  max-width: 640px;
+  width: 100%;
 }
 .btn {
   font-family: 'Libre Baskerville', serif;
-  font-size: 0px;
-  padding: 0px;
   cursor: pointer;
   border-radius: 6px;
   background: transparent;
@@ -39,6 +47,9 @@ body {
   transition: background 0.2s;
   width: 40px;
   height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 .btn:hover { background: #333; }
 .qt {
@@ -62,20 +73,205 @@ body {
 .fade { animation: fi 0.35s ease; }
 @keyframes fi { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 .error { font-family: 'Libre Baskerville', serif; font-size: 0.85rem; color: #a66; font-style: italic; }
+
+/* ── Sticky suggest button ── */
+.suggest-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 1.25rem 2rem;
+  pointer-events: none;
+  display: flex;
+  max-width: 100%;
+}
+.suggest-btn {
+  pointer-events: all;
+  font-family: 'Libre Baskerville', serif;
+  font-size: 0.82rem;
+  font-style: italic;
+  cursor: pointer;
+  background: transparent;
+  color: #666;
+  border: none;
+  padding: 0;
+  transition: color 0.2s;
+  letter-spacing: 0.01em;
+}
+.suggest-btn:hover { color: #aaa; }
+
+/* ── Form & Thank-you pages ── */
+#page-form,
+#page-thanks {
+  align-items: center;
+  justify-content: center;
+}
+
+.form-wrap,
+.thanks-wrap {
+  width: 100%;
+  max-width: 640px;
+  padding: 4rem 2rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-title,
+.thanks-title {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #eee;
+  margin-bottom: 2.5rem;
+  letter-spacing: 0.02em;
+}
+
+.field {
+  margin-bottom: 1.75rem;
+}
+.field label {
+  display: block;
+  font-family: 'Libre Baskerville', serif;
+  font-size: 0.78rem;
+  color: #666;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 0.6rem;
+}
+.field textarea,
+.field input[type="text"] {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid #444;
+  color: #eee;
+  font-family: 'Libre Baskerville', serif;
+  font-size: 1rem;
+  line-height: 1.6;
+  padding: 0.4rem 0 0.6rem;
+  outline: none;
+  resize: none;
+  transition: border-color 0.2s;
+  caret-color: #aaa;
+}
+.field textarea { min-height: 100px; }
+.field textarea:focus,
+.field input[type="text"]:focus {
+  border-bottom-color: #888;
+}
+.field textarea.invalid,
+.field input[type="text"].invalid {
+  border-bottom-color: #a55;
+}
+
+.form-actions {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  margin-top: 0.5rem;
+}
+.action-submit {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 0.85rem;
+  cursor: pointer;
+  background: transparent;
+  color: #ccc;
+  border: 1px solid #555;
+  border-radius: 4px;
+  padding: 0.55rem 1.3rem;
+  transition: background 0.2s, color 0.2s;
+}
+.action-submit:hover { background: #333; color: #eee; }
+.action-submit:disabled { opacity: 0.4; cursor: default; }
+.action-cancel {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 0.82rem;
+  font-style: italic;
+  cursor: pointer;
+  background: transparent;
+  color: #555;
+  border: none;
+  padding: 0;
+  transition: color 0.2s;
+}
+.action-cancel:hover { color: #999; }
+
+/* ── Thank you ── */
+.thanks-message {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 1.2rem;
+  font-style: italic;
+  color: #aaa;
+  line-height: 1.75;
+  margin-bottom: 2.5rem;
+}
+.action-back {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 0.82rem;
+  font-style: italic;
+  cursor: pointer;
+  background: transparent;
+  color: #555;
+  border: none;
+  padding: 0;
+  transition: color 0.2s;
+}
+.action-back:hover { color: #999; }
+
+.page-enter { animation: pe 0.3s ease; }
+@keyframes pe { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 </style>
 </head>
 <body>
-<div class="wrap">
-  <div class="btn-wrap">
-    <!--button class="btn" onclick="showNext()">Refresh</button-->
-    <button class="btn" onclick="showNext()" aria-label="Refresh">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M17.65 6.35C16.2 4.9 14.21 4 12 4C7.58 4 4.01 7.58 4.01 12C4.01 16.42 7.58 20 12 20C15.73 20 18.84 17.45 19.73 14H17.65C16.83 16.33 14.61 18 12 18C8.69 18 6 15.31 6 12C6 8.69 8.69 6 12 6C13.66 6 15.14 6.69 16.22 7.78L13 11H20V4L17.65 6.35Z" fill="currentColor"/>
-      </svg>
-    </button>
+
+<!-- ── Quote page ── -->
+<div id="page-main" class="page active">
+  <div class="wrap">
+    <div class="btn-wrap">
+      <button class="btn" onclick="showNext()" aria-label="Refresh">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M17.65 6.35C16.2 4.9 14.21 4 12 4C7.58 4 4.01 7.58 4.01 12C4.01 16.42 7.58 20 12 20C15.73 20 18.84 17.45 19.73 14H17.65C16.83 16.33 14.61 18 12 18C8.69 18 6 15.31 6 12C6 8.69 8.69 6 12 6C13.66 6 15.14 6.69 16.22 7.78L13 11H20V4L17.65 6.35Z" fill="currentColor"/>
+        </svg>
+      </button>
+    </div>
+    <p class="qt" id="qt">Loading…</p>
+    <p class="au" id="au"></p>
+  </div>
+
+  <div class="suggest-bar">
+    <button class="suggest-btn" onclick="goTo('form')">Suggest a new quote</button>
+  </div>
 </div>
-  <p class="qt" id="qt">Loading…</p>
-  <p class="au" id="au"></p>
+
+<!-- ── Form page ── -->
+<div id="page-form" class="page">
+  <div class="form-wrap">
+    <p class="form-title">Suggest a quote</p>
+
+    <div class="field">
+      <label for="inp-quote">Quote</label>
+      <textarea id="inp-quote" rows="4" placeholder="Type the quote here…"></textarea>
+    </div>
+
+    <div class="field">
+      <label for="inp-author">Author</label>
+      <input type="text" id="inp-author" placeholder="Who said it?">
+    </div>
+
+    <div class="form-actions">
+      <button class="action-submit" id="submit-btn" onclick="submitQuote()">Submit</button>
+      <button class="action-cancel" onclick="goTo('main')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── Thank-you page ── -->
+<div id="page-thanks" class="page">
+  <div class="thanks-wrap">
+    <p class="thanks-title">Thank you</p>
+    <p class="thanks-message">Your suggestion has been received.<br>We'll review it shortly.</p>
+    <button class="action-back" onclick="goTo('main')">← Back to quotes</button>
+  </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
@@ -88,6 +284,15 @@ const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 let quotes = [];
 let lastIdx = -1;
 
+/* ── Navigation ── */
+function goTo(pageId) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  const el = document.getElementById('page-' + pageId);
+  el.classList.add('active', 'page-enter');
+  el.addEventListener('animationend', () => el.classList.remove('page-enter'), { once: true });
+}
+
+/* ── Quote logic ── */
 async function init() {
   const { data, error } = await sb.from('quotes').select('id, text, author').order('id');
   if (error || !data?.length) {
@@ -98,7 +303,6 @@ async function init() {
   }
   quotes = data;
 
-  // If a quote ID is in the hash, show that quote; otherwise show a random one
   const hashId = parseInt(location.hash.slice(1), 10);
   if (!isNaN(hashId)) {
     const idx = quotes.findIndex(q => q.id === hashId);
@@ -122,6 +326,44 @@ function showNext() {
   do { i = Math.floor(Math.random() * quotes.length); } while (i === lastIdx && quotes.length > 1);
   display(i);
 }
+
+/* ── Submit suggestion ── */
+async function submitQuote() {
+  const quoteEl  = document.getElementById('inp-quote');
+  const authorEl = document.getElementById('inp-author');
+  const text   = quoteEl.value.trim();
+  const author = authorEl.value.trim();
+
+  quoteEl.classList.toggle('invalid', !text);
+  authorEl.classList.toggle('invalid', !author);
+  if (!text || !author) return;
+
+  const btn = document.getElementById('submit-btn');
+  btn.disabled = true;
+  btn.textContent = 'Sending…';
+
+  try {
+    await sb.from('quote_suggestions').insert([{ text, author }]);
+  } catch (_) {
+    // Silently continue — show thanks regardless
+  }
+
+  // Reset form
+  document.getElementById('inp-quote').value = '';
+  document.getElementById('inp-author').value = '';
+  btn.disabled = false;
+  btn.textContent = 'Submit';
+
+  goTo('thanks');
+}
+
+/* ── Clear invalid state on input ── */
+document.getElementById('inp-quote').addEventListener('input', function() {
+  if (this.value.trim()) this.classList.remove('invalid');
+});
+document.getElementById('inp-author').addEventListener('input', function() {
+  if (this.value.trim()) this.classList.remove('invalid');
+});
 
 init();
 </script>
